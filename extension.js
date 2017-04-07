@@ -17,7 +17,20 @@ function activate(context) {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
-        vscode.window.showInformationMessage('Hello World!');
+        //vscode.window.showInformationMessage('Hello World!');
+        var editor = vscode.window.activeTextEditor;
+        if(!editor)
+        {
+            vscode.window.showErrorMessage("No window is open, can't run Hello World");
+            return;
+        }
+        editor.edit((editBuilder)=> {
+            editBuilder.delete(editor.selection);
+        }).then((editBuilder)=> {
+            editor.edit((editBuilder)=>{
+                editBuilder.insert(editor.selection.start, "Hello World!");
+            })
+        });
     });
 
     context.subscriptions.push(disposable);
